@@ -96,10 +96,9 @@ for line in flghtLines:
             else :             
                 parentFLDR.append(folder_id+MSA_20M_BLUE)
     
-user = 'jruhter@illinois.edu'
+user = 
 ftp_address = 'ftp.box.com'
-user_passwd = 'AceDuke2!!'
-
+user_passwd = 
 session = FTP.FTP(ftp_address,user,user_passwd)
 
 cwd = os.getcwd()
