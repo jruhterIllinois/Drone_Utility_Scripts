@@ -17,12 +17,12 @@ file_date = []
 folder_id = '/UAV_FIELDSEASON_2022/'
 
 MSI_N_20_M = 'MSI/MSI N/20M'
-MSI_N_20_BLUE = 'MSI/MSI N/20M/Blue'
-MSI_N_20_RED = 'MSI/MSI N/20M/Red'
+MSI_N_20M_BLUE = 'MSI/MSI N/20M/Blue'
+MSI_N_20M_RED = 'MSI/MSI N/20M/Red'
 
-MSI_N_40_M = 'MSI/MSI N/40M'
-MSI_N_40_BLUE = 'MSI/MSI N/40M/Blue'
-MSI_N_40_RED = 'MSI/MSI N/40M/Red'
+MSI_N_40M = 'MSI/MSI N/40M'
+MSI_N_40M_BLUE = 'MSI/MSI N/40M/Blue'
+MSI_N_40M_RED = 'MSI/MSI N/40M/Red'
 
 
 MSI_CS_20M = 'MSI/MSI_C+S/20 M'
@@ -50,50 +50,55 @@ for line in flghtLines:
     imgInfo = line.split(",")
     file_paths.append(imgInfo[0])
     file_date.append(imgInfo[4][2:12])
-
     if(imgInfo[6] == '0'):
         if(float(imgInfo[3]) > 260.0):
             if(imgInfo[5] == '0'):          
-                parentFLDR.append(folder_id+MSI_N_40_BLUE)       
+                parentFLDR.append(folder_id+MSI_N_40M_REDS)       
             else :             
-                parentFLDR.append(folder_id+MSI_N_40_RED)             
+                parentFLDR.append(folder_id+MSI_N_40M_BLUE)             
         elif(float(imgInfo[3]) >240.0):
             if(imgInfo[5] == '0'):          
-                parentFLDR.append(folder_id+MSI_N_20_BLUE)        
+                parentFLDR.append(folder_id+MSI_N_20M_RED)        
             else :             
-                parentFLDR.append(folder_id+MSI_N_20_RED)
+                parentFLDR.append(folder_id+MSI_N_20M_BLUE)
         else:
             parentFLDR.append(folder_id+MSI_N_20_RED)
     elif(imgInfo[6] == '1'):
         if(float(imgInfo[3]) > 260.0):
             if(imgInfo[5] == '0'):          
-                parentFLDR.append(folder_id+MSA_40_BLUE)       
+                parentFLDR.append(folder_id+MSA_40M_RED)       
             else :             
-                parentFLDR.append(folder_id+MSA_40_RED)             
+                parentFLDR.append(folder_id+MSA_40M_BLUE)             
         elif(float(imgInfo[3]) >240.0):
             if(imgInfo[5] == '0'):          
-                parentFLDR.append(folder_id+MSA_20_BLUE)        
+                parentFLDR.append(folder_id+MSA_20M_RED)        
             else :             
-                parentFLDR.append(folder_id+MSA_20_RED)
+                parentFLDR.append(folder_id+MSA_20M_BLUE)
         else:
-            parentFLDR.append(folder_id+MSA_20_RED)
+            if(imgInfo[5] == '0'):          
+                parentFLDR.append(folder_id+MSA_20M_RED)        
+            else :             
+                parentFLDR.append(folder_id+MSA_20M_BLUE)
     else:
         if(float(imgInfo[3]) > 260.0):
             if(imgInfo[5] == '0'):          
-                parentFLDR.append(folder_id+MSI_CS_40M_BLUE)       
+                parentFLDR.append(folder_id+MSI_CS_40M_RED)       
             else :             
-                parentFLDR.append(folder_id+MSI_CS_40M_RED)             
+                parentFLDR.append(folder_id+MSI_CS_40M_BLUE)             
         elif(float(imgInfo[3]) >240.0):
             if(imgInfo[5] == '0'):          
-                parentFLDR.append(folder_id+MSI_CS_20M_BLUE)        
+                parentFLDR.append(folder_id+MSI_CS_20M_RED)        
             else :             
-                parentFLDR.append(folder_id+MSI_CS_20M_RED)
+                parentFLDR.append(folder_id+MSI_CS_20M_BLUE)
         else:
-            parentFLDR.append(folder_id+MSI_CS_20M_RED)
+            if(imgInfo[5] == '0'):          
+                parentFLDR.append(folder_id+MSA_20M_RED)        
+            else :             
+                parentFLDR.append(folder_id+MSA_20M_BLUE)
     
-user = ''
+user = 'jruhter@illinois.edu'
 ftp_address = 'ftp.box.com'
-user_passwd = ''
+user_passwd = 'AceDuke2!!'
 
 session = FTP.FTP(ftp_address,user,user_passwd)
 
