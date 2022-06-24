@@ -35,6 +35,10 @@ long = []
 #Entering FTP Username and Passwd
 user = input("Enter your FTP username:")
 user_passwd = input("Enter your FTP password:")
+if(user == None || user_passwd == None) {
+    print("Must input username or password. Aborting program...")
+    exit()
+}
 
 for subdir, dirs, files in os.walk(rmt_dir):
     
@@ -224,5 +228,3 @@ for copyFolder in parentFLDR:
     indx = indx +1
 
 print('Upload Complete')
-
-
