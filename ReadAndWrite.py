@@ -128,12 +128,12 @@ for line in flghtLines:
     file_date.append(imgInfo[4][2:12])
     if(imgInfo[6] == '0'):
         if(float(imgInfo[3]) > 260.0):
-            if(imgInfo[5] == '0'):          
+            if(imgInfo[5] == '1'):          
                 parentFLDR.append(folder_id+MSI_N_40M_REDS)       
             else :             
                 parentFLDR.append(folder_id+MSI_N_40M_BLUE)             
         elif(float(imgInfo[3]) >240.0):
-            if(imgInfo[5] == '0'):          
+            if(imgInfo[5] == '1'):          
                 parentFLDR.append(folder_id+MSI_N_20M_RED)        
             else :             
                 parentFLDR.append(folder_id+MSI_N_20M_BLUE)
@@ -141,33 +141,33 @@ for line in flghtLines:
             parentFLDR.append(folder_id+MSI_N_20_RED)
     elif(imgInfo[6] == '1'):
         if(float(imgInfo[3]) > 260.0):
-            if(imgInfo[5] == '0'):          
+            if(imgInfo[5] == '1'):          
                 parentFLDR.append(folder_id+MSA_40M_RED)       
             else :             
                 parentFLDR.append(folder_id+MSA_40M_BLUE)             
         elif(float(imgInfo[3]) >240.0):
-            if(imgInfo[5] == '0'):          
+            if(imgInfo[5] == '1'):          
                 parentFLDR.append(folder_id+MSA_20M_RED)        
             else :             
                 parentFLDR.append(folder_id+MSA_20M_BLUE)
         else:
-            if(imgInfo[5] == '0'):          
+            if(imgInfo[5] == '1'):          
                 parentFLDR.append(folder_id+MSA_20M_RED)        
             else :             
                 parentFLDR.append(folder_id+MSA_20M_BLUE)
     else:
         if(float(imgInfo[3]) > 260.0):
-            if(imgInfo[5] == '0'):          
+            if(imgInfo[5] == '1'):          
                 parentFLDR.append(folder_id+MSI_CS_40M_RED)       
             else :             
                 parentFLDR.append(folder_id+MSI_CS_40M_BLUE)             
         elif(float(imgInfo[3]) >240.0):
-            if(imgInfo[5] == '0'):          
+            if(imgInfo[5] == '1'):          
                 parentFLDR.append(folder_id+MSI_CS_20M_RED)        
             else :             
                 parentFLDR.append(folder_id+MSI_CS_20M_BLUE)
         else:
-            if(imgInfo[5] == '0'):          
+            if(imgInfo[5] == '1'):          
                 parentFLDR.append(folder_id+MSA_20M_RED)        
             else :             
                 parentFLDR.append(folder_id+MSA_20M_BLUE)
