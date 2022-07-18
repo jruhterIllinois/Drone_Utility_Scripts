@@ -4,7 +4,7 @@ import ftplib as FTP
 
 parent_fldr = '/UAV_FIELDSEASON_2022/'
 ftp_address = 'ftp.box.com'
-drive_loc = ''
+drive_loc = 'C:/Users/Jonathan/Desktop/Test'
 
 #Entering FTP Username and Passwd
 while(True):
@@ -69,25 +69,24 @@ if(ftype == "M"):
     session.mkd(new_path_blue)
     
 #Walking the drive's folders (M)
-    for subdir, dirs, files in os.walk(drive_loc):
-        red_count = 1
-        blue_count = 1
-        print("Looking into ", subdir)
+    for root, subdir, files in os.walk(drive_loc):
         for filename in files:
             if filename.endswith(".tif"):
-                if(int(filename[9]) <= 5):
-                    session.cwd(new_path_red)
-                    renamed_file = filename.rename(filename, 'R' + red_count + '.tif')
-                    session.storbinary('STOR ' + renamed_file, open(renamed_file, 'rb'))
-                    print("Uploaded: " + renamed_file)
-                    red_count += 1
-                if(int(filename[9]) >= 6):
-                    session.cwd(new_path_blue)
-                    renamed_file = filename.rename(filename, 'B' + blue_count + '.tif')
-                    session.storbinary('STOR ' + renamed_file, open(renamed_file, 'rb'))
-                    print("Uploaded: " + renamed_file)
-                    blue_count += 1
-                    
+                os.chdir(root)
+                try:
+                    stream = open(filename, 'rb')
+                    if(int(filename[9]) <= 5):
+                        session.cwd(new_path_red)
+                        session.storbinary('STOR ' + filename, stream)
+                        print("Uploaded: " + filename)
+
+                    if(int(filename[9]) >= 6):
+                        session.cwd(new_path_blue)
+                        session.storbinary('STOR ' + filename, open(filename, 'rb'))
+                        print("Uploaded: " + filename)
+                    stream.close()
+                except:
+                    print("File Upload Failed: " + filename)
 print("Uploads Complete!")
 session.quit()
 exit()
