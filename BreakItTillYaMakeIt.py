@@ -42,33 +42,55 @@ while(True):
         break
     print("Invalid input. Please try again.")
 
-#Thermal (T)
-if(ftype == "T"):
-    print("Not yet functional. Aborting...")
-    exit()
-    
-#Multispec (M)
+#Starting Session
 session = FTP.FTP(ftp_address,user,user_passwd)
 
-#Determining the destination file path (M)
-if(ftype == "M"):
-    if(field_id == "MSA"):
-        subfolder = 'MSA'
-    if(field_id == "MSIN"):
-        subfolder = 'MSI/MSI N'
-    if(field_id == "MSICS"):
-        subfolder = 'MSI/MSI_C+S'
-    if(field_id == "4ROW"):
-        subfolder = '4Row'
+#Determining the destination file path
+if(field_id == "MSA"):
+    subfolder = 'MSA'
+if(field_id == "MSIN"):
+    subfolder = 'MSI/MSI N'
+if(field_id == "MSICS"):
+    subfolder = 'MSI/MSI_C+S'
+if(field_id == "4ROW"):
+    subfolder = '4Row'
 
-#Generating the new subfolders (M)
+#Generating the new subfolders
+if(ftype == "M"):
     session.cwd(parent_fldr + subfolder)
     new_path_red = parent_fldr + subfolder + '/' + field_id + '_' + altitude + 'M_' + input_date + '_RED'
     new_path_blue = parent_fldr + subfolder + '/' + field_id + '_' + altitude + 'M_' + input_date + '_BLUE'
     session.mkd(new_path_red)
     session.mkd(new_path_blue)
+if(ftype == "T"):
+    session.cwd(parent_fldr + subfolder)
+    new_path_thermal = parent_fldr + subfolder + '/' + field_id + '_' + altitude + 'M_' + input_date + '_THERMAL'
+    session.mkd(new_path_thermal)
+
+#Thermal (T)
+
+#Walking the drive's folders (T)
+if(ftype == "T"):
+    for root, subdir, files in os.walk(drive_loc):
+        for filename in files:
+            if filename.endswith(".TFC"):
+                os.chdir(root)
+                try:
+                    stream = open(filename, 'rb')
+                    session.cwd(new_path_thermal)
+                    session.storbinary('STOR ' + filename, stream)
+                    print("Uploaded: " + filename)
+                    stream.close()
+                except:
+                    print("File Upload Failed: " + filename)
+print("Uploads Complete!")
+session.quit()
+exit()
+    
+#Multispec (M)
     
 #Walking the drive's folders (M)
+if(ftype == "M"):
     for root, subdir, files in os.walk(drive_loc):
         for filename in files:
             if filename.endswith(".tif"):
