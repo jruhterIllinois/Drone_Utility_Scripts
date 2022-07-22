@@ -1,6 +1,7 @@
 import tkinter
 from tkinter import filedialog
 from tkinter import *
+from statistics import mode
 import time
 import tkintermapview
 import os
@@ -29,6 +30,10 @@ class GUI:
         self.root_tk.controlFrame = Frame(self.root_tk)
         self.root_tk.controlFrame.pack(padx=1, pady=5)
 
+        self.root_tk.FlightEstFrame = Frame(self.root_tk)
+        self.root_tk.FlightEstFrame.pack(padx=1, pady=5)
+        
+
 ### create map widget
         self.map_widget = tkintermapview.TkinterMapView(self.root_tk, width=1000, height=700, corner_radius=0)
         self.map_widget.pack(padx=10, pady=30)
@@ -36,7 +41,7 @@ class GUI:
         self.map_widget.set_position(40.0664379,-88.1968861, marker=False)
 
 
-        self.root_tk.dirDisplayMessage = Text(self.root_tk.infoFrame , height = 1, width = 40, bg = 'white', fg = 'black')
+        self.root_tk.dirDisplayMessage = Text(self.root_tk.infoFrame , height = 1, width = 40, bg = 'white', fg = 'black',state='normal')
         self.root_tk.dirDisplayMessage.insert(END, self.dirSelect)
         self.root_tk.dirDisplayMessage.grid(row=0, column=0)
 
@@ -47,7 +52,7 @@ class GUI:
         self.root_tk.button3.grid(row=0, column=2)
         
 
-        self.root_tk.targetLocMessage = Text(self.root_tk.controlFrame , height = 1, width = 40, bg = 'white', fg = 'black')
+        self.root_tk.targetLocMessage = Text(self.root_tk.controlFrame , height = 1, width = 40, bg = 'white', fg = 'black', state='disabled')
         self.root_tk.targetLocMessage.insert(END, 'test')
         self.root_tk.targetLocMessage.grid(row=0, column=0)
 
@@ -55,8 +60,24 @@ class GUI:
         self.root_tk.button4.grid(row=0, column=2)
 
         self.root_tk.confDisplayMessage = Text(self.root_tk.controlFrame , height = 1, width = 60, bg = 'white', fg = 'black')
-        self.root_tk.confDisplayMessage.insert(END, self.dirSelect)
-        self.root_tk.confDisplayMessage.grid(row=0, column=0)   
+        self.root_tk.confDisplayMessage.insert(END, 'No File Selected')
+        self.root_tk.confDisplayMessage.grid(row=0, column=0)
+
+        self.root_tk.AltEst = Text(self.root_tk.FlightEstFrame, height = 1, width = 8, bg = 'white', fg = 'black')
+        self.root_tk.AltEst.insert(END, 'NaN')
+        self.root_tk.AltEst.grid(row=0, column=0)
+
+        self.root_tk.AltLabel = Label(self.root_tk.FlightEstFrame, text='Estimated Alt', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
+        self.root_tk.AltLabel.grid(row=0, column=1)
+
+        self.root_tk.cameraEst = Text(self.root_tk.FlightEstFrame, height = 1, width = 8, bg = 'white', fg = 'black')
+        self.root_tk.cameraEst.insert(END, 'NaN')
+        self.root_tk.cameraEst.grid(row=0, column=2)
+
+        self.root_tk.cameraEstLabel = Label(self.root_tk.FlightEstFrame, text='Estimated Camera', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
+        self.root_tk.cameraEstLabel.grid(row=0, column=3)
+
+        
 
         self.root_tk.mainloop()
         
@@ -123,12 +144,13 @@ class GUI:
       
         lbreite = []
         llange  = []
+        altEst = []
         fileCounter = 0
         for subdir, dirs, files in os.walk(self.dirSelect):
                  
             for filename in files:
                 
-                if filename.endswith(".tif") and fileCounter < 500:
+                if filename.endswith(".tif") and fileCounter < 800:
                     if len(filename)<15 and filename[9] == '1' or filename[9] == '6' and filename.startswith('I'):
                         
                         fileCounter = fileCounter + 1
@@ -138,7 +160,9 @@ class GUI:
                         lange = exif_dict['GPS'][piexif.GPSIFD.GPSLongitude]
 
                         gpstime = exif_dict['Exif'][piexif.ExifIFD.DateTimeOriginal] #File Date
-                        alt = exif_dict['GPS'][piexif.GPSIFD.GPSAltitude] #alt
+                        fileAltIn = exif_dict['GPS'][piexif.GPSIFD.GPSAltitude]
+
+                        altEst.append(math.floor(fileAltIn[0]/fileAltIn[1]))
 
 
         #Convert to Decimal
@@ -147,6 +171,12 @@ class GUI:
 
                         llange.append(-1*lange)
                         lbreite.append(math.floor(breite*100000000)/100000000)
+
+                        if(filename[9] == '1'):
+                            self.cameraEst = 'Red'
+                        else:
+                            self.cameraEst = 'Blue'
+                        
                         
                         
         
@@ -154,7 +184,15 @@ class GUI:
                     #    self.mapPoint()
                    #     print('Found one at', self.lange, self.breite)
                    #     time.sleep(3)
-                
+
+                   
+        self.altEst =  mode(altEst) - 220    
+        self.root_tk.AltEst.delete("1.0", END)
+        self.root_tk.AltEst.insert(END, self.altEst)
+
+        self.root_tk.cameraEst.delete("1.0", END)
+        self.root_tk.cameraEst.insert(END, self.cameraEst)
+        
                    
         for i in range(1,20):
             self.breite = lbreite[i*20]
