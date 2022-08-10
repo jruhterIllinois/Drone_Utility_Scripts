@@ -18,24 +18,27 @@ class GUI:
     def __init__(self):
         # create tkinter window
         self.root_tk = tkinter.Tk()
-        self.root_tk.geometry(f"{1000}x{700}")
+        self.root_tk.geometry(f"{1400}x{900}")
         self.root_tk.title("map_view_polygon_example.py")
 
+        self.root_tk.uploadFrame = Frame(self.root_tk)
+        self.root_tk.uploadFrame.grid(column=1, row=0)
+        self.root_tk.userFrame = Frame(self.root_tk)
+        self.root_tk.userFrame.grid(column=0, row=0)
 
-
-        self.root_tk.infoFrame = Frame(self.root_tk)
+        self.root_tk.infoFrame = Frame(self.root_tk.userFrame)
         self.root_tk.infoFrame.pack(padx=10, pady=10)
         self.dirSelect = 'No Dir Selected'
 
-        self.root_tk.controlFrame = Frame(self.root_tk)
+        self.root_tk.controlFrame = Frame(self.root_tk.userFrame)
         self.root_tk.controlFrame.pack(padx=1, pady=5)
 
-        self.root_tk.FlightEstFrame = Frame(self.root_tk)
+        self.root_tk.FlightEstFrame = Frame(self.root_tk.userFrame)
         self.root_tk.FlightEstFrame.pack(padx=1, pady=5)
         
 
 ### create map widget
-        self.map_widget = tkintermapview.TkinterMapView(self.root_tk, width=1000, height=700, corner_radius=0)
+        self.map_widget = tkintermapview.TkinterMapView(self.root_tk.userFrame, width=1000, height=700, corner_radius=0)
         self.map_widget.pack(padx=10, pady=30)
         self.map_widget.set_tile_server("https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}&s=Ga", max_zoom=22)
         self.map_widget.set_position(40.0664379,-88.1968861, marker=False)
@@ -77,9 +80,70 @@ class GUI:
         self.root_tk.cameraEstLabel = Label(self.root_tk.FlightEstFrame, text='Estimated Camera', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
         self.root_tk.cameraEstLabel.grid(row=0, column=3)
 
+
+
+
+### upload frames widgets:
+
+        self.root_tk.uploadBoxFrameLabel = Label(self.root_tk.uploadFrame , text='Upload Criteris', relief=FLAT, height = 1, width = 30, bg='white', fg='black')
+        self.root_tk.uploadBoxFrameLabel.pack(padx=40, pady=40)
+
+
+        self.root_tk.uB_frame = Frame(self.root_tk.uploadFrame)
+        self.root_tk.uB_frame.pack(padx=40, pady=50)
+
+
+        self.root_tk.uB_fieldLab = Label(self.root_tk.uB_frame, text='Field Name:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
+        self.root_tk.uB_fieldLab.grid(row=0, column=0)
+
+        self.root_tk.uB_field_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
+        self.root_tk.uB_field_entry.insert(END, 'NaN')
+        self.root_tk.uB_field_entry.grid(row=0, column=1)
+
+
+        self.root_tk.uB_DateLab = Label(self.root_tk.uB_frame, text='Date:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
+        self.root_tk.uB_DateLab.grid(row=1, column=0)
+
+        self.root_tk.uB_Date_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
+        self.root_tk.uB_Date_entry.insert(END, 'NaN')
+        self.root_tk.uB_Date_entry.grid(row=1, column=1)
+
+        self.root_tk.uB_CameraLab = Label(self.root_tk.uB_frame, text='Camera:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
+        self.root_tk.uB_CameraLab.grid(row=2, column=0)
+
+        self.root_tk.uB_camera_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
+        self.root_tk.uB_camera_entry.insert(END, 'NaN')
+        self.root_tk.uB_camera_entry.grid(row=2, column=1)
+
+        self.root_tk.uB_altitudeLab = Label(self.root_tk.uB_frame, text='Altitude:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
+        self.root_tk.uB_altitudeLab.grid(row=3, column=0)
+
+        self.root_tk.uB_altitudeLab_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
+        self.root_tk.uB_altitudeLab_entry.insert(END, 'NaN')
+        self.root_tk.uB_altitudeLab_entry.grid(row=3, column=1)
+
+        self.root_tk.uB_usernameLab = Label(self.root_tk.uB_frame, text='Box User Name:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
+        self.root_tk.uB_usernameLab.grid(row=4, column=0)
+
+        self.root_tk.uB_usernameLab_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
+        self.root_tk.uB_usernameLab_entry.insert(END, 'NaN')
+        self.root_tk.uB_usernameLab_entry.grid(row=4, column=1)       
+        
+        self.root_tk.uB_passwordLab = Label(self.root_tk.uB_frame, text='Box Password:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
+        self.root_tk.uB_passwordLab.grid(row=5, column=0)
+
+        self.root_tk.uB_passwordLab_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
+        self.root_tk.uB_passwordLab_entry.insert(END, 'NaN')
+        self.root_tk.uB_passwordLab_entry.grid(row=5, column=1)          
+
         
 
         self.root_tk.mainloop()
+
+
+    def upload2Box(self):
+
+        print('Test')        
         
 
     def browse_button(self):
