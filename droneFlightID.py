@@ -9,6 +9,7 @@ import piexif
 import glob
 import shutil
 import math
+import BreakItTillYaMakeIt as btmi
 
 
 
@@ -154,7 +155,7 @@ class GUI:
 
     def upload2Box(self): 
         
-   #     btmi.upload(self.testVar)
+        btmi.upload(self.testVar)
         print('Test')        
         
 
