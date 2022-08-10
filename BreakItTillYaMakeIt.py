@@ -6,109 +6,116 @@ parent_fldr = '/UAV_FIELDSEASON_2022/'
 ftp_address = 'ftp.box.com'
 drive_loc = 'C:/Users/Jonathan/Desktop/Test'
 
-#Entering FTP Username and Passwd
-while(True):
-    user = input("Enter your FTP username: ")
-    user_passwd = input("Enter your FTP password: ")
-    if(user != None and user_passwd != None and ("@illinois.edu" in user)):
-        break
-    print("Must input valid username or password. Please try again.")
 
-#Entering the Field ID
-while(True):
-    field_id = input("Enter the field flown: MSA, MSIN, MSICS, 4ROW: ")
-    if(field_id == "MSA" or field_id == "MSIN" or field_id == "MSICS" or field_id == "4ROW"):
-        break
-    print("Must input valid field. Please try again.")
+def upload(var):
+    print('Got the variable', var)
+    exit()
 
-#Entering the Altitude
-while(True):
-    altitude = input("Enter the flight altitude (in meters): 10, 20, 30, 40: ")
-    if(altitude == "10" or altitude == "20" or altitude == "30" or altitude == "40"):
-        break
-    print("Must input valid altitude. Please try again.")
-    
-#Entering the Date
-while(True):
-    input_date = input("Enter the date flown as MMDDYYYY: ")
-    if(len(input_date) == 8 and input_date.isdigit()):
-        break
-    print("Must input valid date. Make sure you have no spaces or dashes. Please try again.")
+def UPLOAD(var):
 
-#Entering the Type
-while(True):
-    ftype = input("Enter flight type Multispec (M) / Thermal (T): ")
-    if(ftype == "M" or ftype == "T"):
-        break
-    print("Invalid input. Please try again.")
+    #Entering FTP Username and Passwd
+    while(True):
+        user = input("Enter your FTP username: ")
+        user_passwd = input("Enter your FTP password: ")
+        if(user != None and user_passwd != None and ("@illinois.edu" in user)):
+            break
+        print("Must input valid username or password. Please try again.")
 
-#Starting Session
-session = FTP.FTP(ftp_address,user,user_passwd)
+    #Entering the Field ID
+    while(True):
+        field_id = input("Enter the field flown: MSA, MSIN, MSICS, 4ROW: ")
+        if(field_id == "MSA" or field_id == "MSIN" or field_id == "MSICS" or field_id == "4ROW"):
+            break
+        print("Must input valid field. Please try again.")
 
-#Determining the destination file path
-if(field_id == "MSA"):
-    subfolder = 'MSA'
-if(field_id == "MSIN"):
-    subfolder = 'MSI/MSI N'
-if(field_id == "MSICS"):
-    subfolder = 'MSI/MSI_C+S'
-if(field_id == "4ROW"):
-    subfolder = '4Row'
+    #Entering the Altitude
+    while(True):
+        altitude = input("Enter the flight altitude (in meters): 10, 20, 30, 40: ")
+        if(altitude == "10" or altitude == "20" or altitude == "30" or altitude == "40"):
+            break
+        print("Must input valid altitude. Please try again.")
+        
+    #Entering the Date
+    while(True):
+        input_date = input("Enter the date flown as MMDDYYYY: ")
+        if(len(input_date) == 8 and input_date.isdigit()):
+            break
+        print("Must input valid date. Make sure you have no spaces or dashes. Please try again.")
 
-#Generating the new subfolders
-if(ftype == "M"):
-    session.cwd(parent_fldr + subfolder)
-    new_path_red = parent_fldr + subfolder + '/' + field_id + '_' + altitude + 'M_' + input_date + '_RED'
-    new_path_blue = parent_fldr + subfolder + '/' + field_id + '_' + altitude + 'M_' + input_date + '_BLUE'
-    session.mkd(new_path_red)
-    session.mkd(new_path_blue)
-if(ftype == "T"):
-    session.cwd(parent_fldr + subfolder)
-    new_path_thermal = parent_fldr + subfolder + '/' + field_id + '_' + altitude + 'M_' + input_date + '_THERMAL'
-    session.mkd(new_path_thermal)
+    #Entering the Type
+    while(True):
+        ftype = input("Enter flight type Multispec (M) / Thermal (T): ")
+        if(ftype == "M" or ftype == "T"):
+            break
+        print("Invalid input. Please try again.")
 
-#Thermal (T)
+    #Starting Session
+    session = FTP.FTP(ftp_address,user,user_passwd)
 
-#Walking the drive's folders (T)
-if(ftype == "T"):
-    for root, subdir, files in os.walk(drive_loc):
-        for filename in files:
-            if filename.endswith(".TFC"):
-                os.chdir(root)
-                try:
-                    stream = open(filename, 'rb')
-                    session.cwd(new_path_thermal)
-                    session.storbinary('STOR ' + filename, stream)
-                    print("Uploaded: " + filename)
-                    stream.close()
-                except:
-                    print("File Upload Failed: " + filename)
-print("Uploads Complete!")
-session.quit()
-exit()
-    
-#Multispec (M)
-    
-#Walking the drive's folders (M)
-if(ftype == "M"):
-    for root, subdir, files in os.walk(drive_loc):
-        for filename in files:
-            if filename.endswith(".tif"):
-                os.chdir(root)
-                try:
-                    stream = open(filename, 'rb')
-                    if(int(filename[9]) <= 5):
-                        session.cwd(new_path_red)
+    #Determining the destination file path
+    if(field_id == "MSA"):
+        subfolder = 'MSA'
+    if(field_id == "MSIN"):
+        subfolder = 'MSI/MSI N'
+    if(field_id == "MSICS"):
+        subfolder = 'MSI/MSI_C+S'
+    if(field_id == "4ROW"):
+        subfolder = '4Row'
+
+    #Generating the new subfolders
+    if(ftype == "M"):
+        session.cwd(parent_fldr + subfolder)
+        new_path_red = parent_fldr + subfolder + '/' + field_id + '_' + altitude + 'M_' + input_date + '_RED'
+        new_path_blue = parent_fldr + subfolder + '/' + field_id + '_' + altitude + 'M_' + input_date + '_BLUE'
+        session.mkd(new_path_red)
+        session.mkd(new_path_blue)
+    if(ftype == "T"):
+        session.cwd(parent_fldr + subfolder)
+        new_path_thermal = parent_fldr + subfolder + '/' + field_id + '_' + altitude + 'M_' + input_date + '_THERMAL'
+        session.mkd(new_path_thermal)
+
+    #Thermal (T)
+
+    #Walking the drive's folders (T)
+    if(ftype == "T"):
+        for root, subdir, files in os.walk(drive_loc):
+            for filename in files:
+                if filename.endswith(".TFC"):
+                    os.chdir(root)
+                    try:
+                        stream = open(filename, 'rb')
+                        session.cwd(new_path_thermal)
                         session.storbinary('STOR ' + filename, stream)
                         print("Uploaded: " + filename)
+                        stream.close()
+                    except:
+                        print("File Upload Failed: " + filename)
+    print("Uploads Complete!")
+    session.quit()
+    exit()
+        
+    #Multispec (M)
+        
+    #Walking the drive's folders (M)
+    if(ftype == "M"):
+        for root, subdir, files in os.walk(drive_loc):
+            for filename in files:
+                if filename.endswith(".tif"):
+                    os.chdir(root)
+                    try:
+                        stream = open(filename, 'rb')
+                        if(int(filename[9]) <= 5):
+                            session.cwd(new_path_red)
+                            session.storbinary('STOR ' + filename, stream)
+                            print("Uploaded: " + filename)
 
-                    if(int(filename[9]) >= 6):
-                        session.cwd(new_path_blue)
-                        session.storbinary('STOR ' + filename, open(filename, 'rb'))
-                        print("Uploaded: " + filename)
-                    stream.close()
-                except:
-                    print("File Upload Failed: " + filename)
-print("Uploads Complete!")
-session.quit()
-exit()
+                        if(int(filename[9]) >= 6):
+                            session.cwd(new_path_blue)
+                            session.storbinary('STOR ' + filename, open(filename, 'rb'))
+                            print("Uploaded: " + filename)
+                        stream.close()
+                    except:
+                        print("File Upload Failed: " + filename)
+    print("Uploads Complete!")
+    session.quit()
+    exit()

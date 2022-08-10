@@ -13,6 +13,7 @@ import math
 
 
 
+
 class GUI:
 
     def __init__(self):
@@ -134,15 +135,26 @@ class GUI:
 
         self.root_tk.uB_passwordLab_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
         self.root_tk.uB_passwordLab_entry.insert(END, 'NaN')
-        self.root_tk.uB_passwordLab_entry.grid(row=5, column=1)          
+        self.root_tk.uB_passwordLab_entry.grid(row=5, column=1)
+
+        self.root_tk.uB_AltSliderLab = Label(self.root_tk.uB_frame, text='Select Alt:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
+        self.root_tk.uB_AltSliderLab.grid(row=6, column=0)
+
+        self.root_tk.uB_AltSlider = Scale(self.root_tk.uB_frame, from_=0, to=100,tickinterval=25, length= 180, orient=HORIZONTAL, bg = 'white', fg = 'black')
+        self.root_tk.uB_AltSlider.grid(row=6, column=1)
+
+        self.testVar = 'Test'
+        self.root_tk.button5 = Button(self.root_tk.uB_frame ,text="Upload", command=self.upload2Box, height=1, width=20, fg = 'black' )
+        self.root_tk.button5.grid(row=7, column=0)       
 
         
 
         self.root_tk.mainloop()
 
 
-    def upload2Box(self):
-
+    def upload2Box(self): 
+        
+   #     btmi.upload(self.testVar)
         print('Test')        
         
 
@@ -201,6 +213,7 @@ class GUI:
     #    print('Mapping Point ', self.breite, ' ', self.lange)
         self.map_widget.set_marker(self.breite, self.lange, text=self.mapName, text_color="green",
                                  marker_color_circle="black", marker_color_outside="gray40", font=("Helvetica Bold", 24))
+
 
 
     def collectGpsPoint(self):
