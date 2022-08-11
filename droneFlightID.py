@@ -11,10 +11,6 @@ import shutil
 import math
 import BreakItTillYaMakeIt as btmi
 
-
-
-
-
 class GUI:
 
     def __init__(self):
@@ -30,7 +26,7 @@ class GUI:
 
         self.root_tk.infoFrame = Frame(self.root_tk.userFrame)
         self.root_tk.infoFrame.pack(padx=10, pady=10)
-        self.dirSelect = 'No Dir Selected'
+        self.dirSelect = 'Choose a Directory'
 
         self.root_tk.controlFrame = Frame(self.root_tk.userFrame)
         self.root_tk.controlFrame.pack(padx=1, pady=5)
@@ -38,7 +34,6 @@ class GUI:
         self.root_tk.FlightEstFrame = Frame(self.root_tk.userFrame)
         self.root_tk.FlightEstFrame.pack(padx=1, pady=5)
         
-
 ### create map widget
         self.map_widget = tkintermapview.TkinterMapView(self.root_tk.userFrame, width=1000, height=700, corner_radius=0)
         self.map_widget.pack(padx=10, pady=30)
@@ -50,7 +45,7 @@ class GUI:
         self.root_tk.dirDisplayMessage.insert(END, self.dirSelect)
         self.root_tk.dirDisplayMessage.grid(row=0, column=0)
 
-        self.root_tk.button2 = Button(self.root_tk.infoFrame ,text="Browse for Flight Dir", command=self.browse_button, height=1, width=20)
+        self.root_tk.button2 = Button(self.root_tk.infoFrame ,text="Select Flight", command=self.browse_button, height=1, width=20)
         self.root_tk.button2.grid(row=0, column=1)
 
         self.root_tk.button3 = Button(self.root_tk.infoFrame ,text="Start GPS Search", command=self.collectGpsPoint, height=1, width=20, fg = 'red' )
@@ -61,11 +56,11 @@ class GUI:
         self.root_tk.targetLocMessage.insert(END, 'test')
         self.root_tk.targetLocMessage.grid(row=0, column=0)
 
-        self.root_tk.button4 = Button(self.root_tk.controlFrame ,text="Load Field File", command=self.browse_conf, height=1, width=20, fg = 'black' )
+        self.root_tk.button4 = Button(self.root_tk.controlFrame ,text="Select File", command=self.browse_conf, height=1, width=20, fg = 'black' )
         self.root_tk.button4.grid(row=0, column=2)
 
         self.root_tk.confDisplayMessage = Text(self.root_tk.controlFrame , height = 1, width = 60, bg = 'white', fg = 'black')
-        self.root_tk.confDisplayMessage.insert(END, 'No File Selected')
+        self.root_tk.confDisplayMessage.insert(END, 'Choose a Field Configuration File')
         self.root_tk.confDisplayMessage.grid(row=0, column=0)
 
         self.root_tk.AltEst = Text(self.root_tk.FlightEstFrame, height = 1, width = 8, bg = 'white', fg = 'black')
@@ -87,12 +82,12 @@ class GUI:
 
 ### upload frames widgets:
 
-        self.root_tk.uploadBoxFrameLabel = Label(self.root_tk.uploadFrame , text='Upload Criteris', relief=FLAT, height = 1, width = 30, bg='white', fg='black')
-        self.root_tk.uploadBoxFrameLabel.pack(padx=40, pady=40)
+        self.root_tk.uploadBoxFrameLabel = Label(self.root_tk.uploadFrame , text='Upload Criteria', relief=FLAT, height = 1, width = 39, bg='white', fg='black')
+        self.root_tk.uploadBoxFrameLabel.pack(padx=30, pady=0)
 
 
         self.root_tk.uB_frame = Frame(self.root_tk.uploadFrame)
-        self.root_tk.uB_frame.pack(padx=40, pady=50)
+        self.root_tk.uB_frame.pack(padx=40, pady=5)
 
 
         self.root_tk.uB_fieldLab = Label(self.root_tk.uB_frame, text='Field Name:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
@@ -117,14 +112,12 @@ class GUI:
         self.root_tk.uB_camera_entry.insert(END, 'NaN')
         self.root_tk.uB_camera_entry.grid(row=2, column=1)
 
-        self.root_tk.uB_altitudeLab = Label(self.root_tk.uB_frame, text='Altitude:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
-        self.root_tk.uB_altitudeLab.grid(row=3, column=0)
+        self.root_tk.uB_AltSliderLab = Label(self.root_tk.uB_frame, text='Select Altitude:', relief=RAISED, height = 3, width = 15, bg='white', fg='black')
+        self.root_tk.uB_AltSliderLab.grid(row=6, column=0)
+        self.root_tk.uB_AltSlider = Scale(self.root_tk.uB_frame, from_=0, to=100,tickinterval=25, length= 160, orient=HORIZONTAL, bg = 'white', fg = 'black')
+        self.root_tk.uB_AltSlider.grid(row=6, column=1)
 
-        self.root_tk.uB_altitudeLab_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
-        self.root_tk.uB_altitudeLab_entry.insert(END, 'NaN')
-        self.root_tk.uB_altitudeLab_entry.grid(row=3, column=1)
-
-        self.root_tk.uB_usernameLab = Label(self.root_tk.uB_frame, text='Box User Name:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
+        self.root_tk.uB_usernameLab = Label(self.root_tk.uB_frame, text='Box Username:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
         self.root_tk.uB_usernameLab.grid(row=4, column=0)
 
         self.root_tk.uB_usernameLab_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
@@ -138,14 +131,7 @@ class GUI:
         self.root_tk.uB_passwordLab_entry.insert(END, 'NaN')
         self.root_tk.uB_passwordLab_entry.grid(row=5, column=1)
 
-        self.root_tk.uB_AltSliderLab = Label(self.root_tk.uB_frame, text='Select Alt:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
-        self.root_tk.uB_AltSliderLab.grid(row=6, column=0)
-
-        self.root_tk.uB_AltSlider = Scale(self.root_tk.uB_frame, from_=0, to=100,tickinterval=25, length= 180, orient=HORIZONTAL, bg = 'white', fg = 'black')
-        self.root_tk.uB_AltSlider.grid(row=6, column=1)
-
-        self.testVar = 'Test'
-        self.root_tk.button5 = Button(self.root_tk.uB_frame ,text="Upload", command=self.upload2Box, height=1, width=20, fg = 'black' )
+        self.root_tk.button5 = Button(self.root_tk.uB_frame ,text="Upload", command=self.upload2Box, height=2, width=15, fg = 'black' )
         self.root_tk.button5.grid(row=7, column=0)       
 
         
@@ -153,10 +139,9 @@ class GUI:
         self.root_tk.mainloop()
 
 
-    def upload2Box(self): 
+    def upload2Box(self):
         
-        btmi.upload(self.testVar)
-        print('Test')        
+        btmi.uploadToBox(self)     
         
 
     def browse_button(self):
@@ -285,6 +270,3 @@ class GUI:
 
 
 GUI()
-
-
-
