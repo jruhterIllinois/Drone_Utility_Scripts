@@ -105,34 +105,37 @@ class GUI:
         self.root_tk.uB_Date_entry.insert(END, 'NaN')
         self.root_tk.uB_Date_entry.grid(row=1, column=1)
 
-        self.root_tk.uB_CameraLab = Label(self.root_tk.uB_frame, text='Camera:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
-        self.root_tk.uB_CameraLab.grid(row=2, column=0)
-
-        self.root_tk.uB_camera_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
-        self.root_tk.uB_camera_entry.insert(END, 'NaN')
-        self.root_tk.uB_camera_entry.grid(row=2, column=1)
-
-        self.root_tk.uB_AltSliderLab = Label(self.root_tk.uB_frame, text='Select Altitude:', relief=RAISED, height = 3, width = 15, bg='white', fg='black')
-        self.root_tk.uB_AltSliderLab.grid(row=6, column=0)
-        self.root_tk.uB_AltSlider = Scale(self.root_tk.uB_frame, from_=0, to=100,tickinterval=25, length= 160, orient=HORIZONTAL, bg = 'white', fg = 'black')
-        self.root_tk.uB_AltSlider.grid(row=6, column=1)
-
         self.root_tk.uB_usernameLab = Label(self.root_tk.uB_frame, text='Box Username:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
-        self.root_tk.uB_usernameLab.grid(row=4, column=0)
+        self.root_tk.uB_usernameLab.grid(row=2, column=0)
 
         self.root_tk.uB_usernameLab_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
         self.root_tk.uB_usernameLab_entry.insert(END, 'NaN')
-        self.root_tk.uB_usernameLab_entry.grid(row=4, column=1)       
+        self.root_tk.uB_usernameLab_entry.grid(row=2, column=1)       
         
         self.root_tk.uB_passwordLab = Label(self.root_tk.uB_frame, text='Box Password:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
-        self.root_tk.uB_passwordLab.grid(row=5, column=0)
+        self.root_tk.uB_passwordLab.grid(row=3, column=0)
 
         self.root_tk.uB_passwordLab_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
         self.root_tk.uB_passwordLab_entry.insert(END, 'NaN')
-        self.root_tk.uB_passwordLab_entry.grid(row=5, column=1)
+        self.root_tk.uB_passwordLab_entry.grid(row=3, column=1)
+
+        self.root_tk.uB_AltSliderLab = Label(self.root_tk.uB_frame, text='Select Altitude:', relief=RAISED, height = 3, width = 15, bg='white', fg='black')
+        self.root_tk.uB_AltSliderLab.grid(row=4, column=0)
+        
+        self.root_tk.uB_AltSlider = Scale(self.root_tk.uB_frame, from_=0, to=100,tickinterval=25, length= 160, orient=HORIZONTAL, bg = 'white', fg = 'black')
+        self.root_tk.uB_AltSlider.grid(row=4, column=1)
+
+        self.root_tk.uB_TypeLab = Label(self.root_tk.uB_frame, text='Flight Type:', relief=RAISED, height = 2, width = 15, bg='white', fg='black')
+        self.root_tk.uB_TypeLab.grid(row=5, column=0)
+
+        self.root_tk.uB_var = StringVar()
+        self.root_tk.uB_Type_entry0 = Radiobutton(self.root_tk.uB_frame, text='Multispectral', variable = self.root_tk.uB_var, value = 'M')
+        self.root_tk.uB_Type_entry1 = Radiobutton(self.root_tk.uB_frame, text='Thermal', variable = self.root_tk.uB_var, value = 'T')
+        self.root_tk.uB_Type_entry0.grid(row=5, column=1)
+        self.root_tk.uB_Type_entry1.grid(row=6, column=1)
 
         self.root_tk.button5 = Button(self.root_tk.uB_frame ,text="Upload", command=self.upload2Box, height=2, width=15, fg = 'black' )
-        self.root_tk.button5.grid(row=7, column=0)       
+        self.root_tk.button5.grid(row=6, column=0)       
 
         
 

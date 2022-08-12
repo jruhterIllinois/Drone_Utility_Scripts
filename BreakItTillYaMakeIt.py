@@ -9,17 +9,19 @@ ftp_address = 'ftp.box.com'
 def uploadToBox(var):
 
     #Variables
-    drive_loc = ''
-    user = var.root_tk.uB_root_tk.uB_usernameLab_entry.get()
-    user_passwd = var.root_tk.uB_passwordLab_entry.get()
-    ftype = "M"
-    altitude = var.root_tk.uB_AltSlider.get()
-    print(user, user_passwd)
-
+    field_id = var.root_tk.uB_field_entry.get("1.0", 'end-1c')
+    drive_loc = var.root_tk.dirDisplayMessage.get("1.0", 'end-1c')
+    user = var.root_tk.uB_usernameLab_entry.get("1.0", 'end-1c')
+    user_passwd = var.root_tk.uB_passwordLab_entry.get("1.0", 'end-1c')
+    ftype = var.root_tk.uB_var.get()
+    altitude = str(var.root_tk.uB_AltSlider.get())
+    input_date = var.root_tk.uB_Date_entry.get("1.0", 'end-1c')
+    
     #Starting Session
     session = FTP.FTP(ftp_address,user,user_passwd)
 
-    #Determining the destination file path
+###### Remove for general program #####
+
     if(field_id == "MSA"):
         subfolder = 'MSA'
     if(field_id == "MSIN"):
@@ -29,6 +31,8 @@ def uploadToBox(var):
     if(field_id == "4ROW"):
         subfolder = '4Row'
 
+#################################
+
     #Generating the new subfolders
     if(ftype == "M"):
         session.cwd(parent_fldr + subfolder)
@@ -36,6 +40,7 @@ def uploadToBox(var):
         new_path_blue = parent_fldr + subfolder + '/' + field_id + '_' + altitude + 'M_' + input_date + '_BLUE'
         session.mkd(new_path_red)
         session.mkd(new_path_blue)
+        
     if(ftype == "T"):
         session.cwd(parent_fldr + subfolder)
         new_path_thermal = parent_fldr + subfolder + '/' + field_id + '_' + altitude + 'M_' + input_date + '_THERMAL'
@@ -57,8 +62,8 @@ def uploadToBox(var):
                         stream.close()
                     except:
                         print("File Upload Failed: " + filename)
-    print("Uploads Complete!")
-    session.quit()
+        print("Uploads Complete!")
+        session.quit()
         
     #Multispec (M)
         
@@ -82,8 +87,8 @@ def uploadToBox(var):
                         stream.close()
                     except:
                         print("File Upload Failed: " + filename)
-    print("Uploads Complete!")
-    session.quit()
+        print("Uploads Complete!")
+        session.quit()
 
 def StartFTP():
 
