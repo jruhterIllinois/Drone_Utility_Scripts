@@ -58,6 +58,7 @@ def uploadToBox(var):
                         stream = open(filename, 'rb')
                         session.cwd(new_path_thermal)
                         session.storbinary('STOR ' + filename, stream)
+                        var.uploaded_count = var.uploaded_count + 1
                         print("Uploaded: " + filename)
                         stream.close()
                     except:
@@ -78,11 +79,13 @@ def uploadToBox(var):
                         if(int(filename[9]) <= 5):
                             session.cwd(new_path_red)
                             session.storbinary('STOR ' + filename, stream)
+                            var.uploaded_count = var.uploaded_count + 1
                             print("Uploaded: " + filename)
-
                         if(int(filename[9]) >= 6):
                             session.cwd(new_path_blue)
                             session.storbinary('STOR ' + filename, open(filename, 'rb'))
+                            var.uploaded_count = var.uploaded_count + 1
+                            var.progress_label.config(text = str("Uploaded: " + filename))
                             print("Uploaded: " + filename)
                         stream.close()
                     except:

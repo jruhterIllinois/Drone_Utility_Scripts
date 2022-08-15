@@ -1,6 +1,7 @@
 import tkinter
 from tkinter import filedialog
 from tkinter import *
+from tkinter import ttk
 from statistics import mode
 import time
 import tkintermapview
@@ -82,7 +83,7 @@ class GUI:
 
 ### upload frames widgets:
 
-        self.root_tk.uploadBoxFrameLabel = Label(self.root_tk.uploadFrame , text='Upload Criteria', relief=FLAT, height = 1, width = 39, bg='white', fg='black')
+        self.root_tk.uploadBoxFrameLabel = Label(self.root_tk.uploadFrame , text='Upload Criteria', relief=FLAT, height = 1, width = 45, bg='white', fg='black')
         self.root_tk.uploadBoxFrameLabel.pack(padx=30, pady=0)
 
 
@@ -93,7 +94,7 @@ class GUI:
         self.root_tk.uB_fieldLab = Label(self.root_tk.uB_frame, text='Field Name:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
         self.root_tk.uB_fieldLab.grid(row=0, column=0)
 
-        self.root_tk.uB_field_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
+        self.root_tk.uB_field_entry = Text(self.root_tk.uB_frame, height = 1, width = 25, bg = 'white', fg = 'black')
         self.root_tk.uB_field_entry.insert(END, 'NaN')
         self.root_tk.uB_field_entry.grid(row=0, column=1)
 
@@ -101,28 +102,28 @@ class GUI:
         self.root_tk.uB_DateLab = Label(self.root_tk.uB_frame, text='Date:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
         self.root_tk.uB_DateLab.grid(row=1, column=0)
 
-        self.root_tk.uB_Date_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
+        self.root_tk.uB_Date_entry = Text(self.root_tk.uB_frame, height = 1, width = 25, bg = 'white', fg = 'black')
         self.root_tk.uB_Date_entry.insert(END, 'NaN')
         self.root_tk.uB_Date_entry.grid(row=1, column=1)
 
         self.root_tk.uB_usernameLab = Label(self.root_tk.uB_frame, text='Box Username:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
         self.root_tk.uB_usernameLab.grid(row=2, column=0)
 
-        self.root_tk.uB_usernameLab_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
+        self.root_tk.uB_usernameLab_entry = Text(self.root_tk.uB_frame, height = 1, width = 25, bg = 'white', fg = 'black')
         self.root_tk.uB_usernameLab_entry.insert(END, 'NaN')
         self.root_tk.uB_usernameLab_entry.grid(row=2, column=1)       
         
         self.root_tk.uB_passwordLab = Label(self.root_tk.uB_frame, text='Box Password:', relief=RAISED, height = 1, width = 15, bg='white', fg='black')
         self.root_tk.uB_passwordLab.grid(row=3, column=0)
 
-        self.root_tk.uB_passwordLab_entry = Text(self.root_tk.uB_frame, height = 1, width = 20, bg = 'white', fg = 'black')
+        self.root_tk.uB_passwordLab_entry = Text(self.root_tk.uB_frame, height = 1, width = 25, bg = 'white', fg = 'black')
         self.root_tk.uB_passwordLab_entry.insert(END, 'NaN')
         self.root_tk.uB_passwordLab_entry.grid(row=3, column=1)
 
         self.root_tk.uB_AltSliderLab = Label(self.root_tk.uB_frame, text='Select Altitude:', relief=RAISED, height = 3, width = 15, bg='white', fg='black')
         self.root_tk.uB_AltSliderLab.grid(row=4, column=0)
         
-        self.root_tk.uB_AltSlider = Scale(self.root_tk.uB_frame, from_=0, to=100,tickinterval=25, length= 160, orient=HORIZONTAL, bg = 'white', fg = 'black')
+        self.root_tk.uB_AltSlider = Scale(self.root_tk.uB_frame, from_=0, to=100,tickinterval=25, length= 200, orient=HORIZONTAL, bg = 'white', fg = 'black')
         self.root_tk.uB_AltSlider.grid(row=4, column=1)
 
         self.root_tk.uB_TypeLab = Label(self.root_tk.uB_frame, text='Flight Type:', relief=RAISED, height = 2, width = 15, bg='white', fg='black')
@@ -143,10 +144,25 @@ class GUI:
 
 
     def upload2Box(self):
-        
-        btmi.uploadToBox(self)     
-        
+        self.file_count = self.countFiles()
+        self.uploaded_count = 0
 
+        self.popup = Toplevel()
+        self.percent_uploaded = DoubleVar(self.popup, float(self.uploaded_count / self.file_count))
+        self.progress_bar = ttk.Progressbar(self.popup, orient = HORIZONTAL, length = 250, mode = 'determinate').pack(padx = 30, pady = 15)
+        self.progress_label = Label(self.popup, text = "Uploading...").pack(pady = 5)
+        
+        btmi.uploadToBox(self)
+
+    def countFiles(self):
+    # Counts the number of files in the dir
+        file_count = 0;
+        for root, subdir, files in os.walk(self.root_tk.dirDisplayMessage.get("1.0", 'end-1c')):
+            for filename in files:
+                if filename.endswith(".tif") or filename.endswith(".TFC"):
+                    file_count = file_count + 1
+        return file_count
+                
     def browse_button(self):
     # Allow user to select a directory and store it in global var
     # called folder_path
